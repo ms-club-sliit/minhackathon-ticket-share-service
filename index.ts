@@ -51,7 +51,7 @@ app.get("/awareness-session/ticket/:id", async (req, res) => {
             return;
         }
 
-        res.render("ticket", {
+        res.render("awareness", {
             image_src: docSnap.get("url"),
         });
     }catch(e){
