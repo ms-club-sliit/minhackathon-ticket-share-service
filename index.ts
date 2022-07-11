@@ -1,5 +1,5 @@
 import express from "express";
-import { doc, getDoc } from "firebase/firestore";
+import { collection, doc, getDoc, where, query, getDocs } from "firebase/firestore";
 import { db } from "./firebase";
 require('dotenv').config()
 
@@ -17,19 +17,23 @@ app.get("/teams/ticket/:id", async (req, res) => {
             return;
         }
         
-        let docRef = doc(db, "teams", id);
-        let docSnap = await getDoc(docRef);
+        let teamsRef = collection(db, "teams");
+        let q = query(teamsRef, where("number", "==", parseInt(id)));
+        let querySnap = await getDocs(q);
 
-        if(!docSnap.exists()){
+        if(querySnap.empty){
             res.sendStatus(404);
             return;
         }
 
+        let doc = querySnap.docs[0];
+        
         res.render("ticket", {
-            image_src: docSnap.get("url"),
-            team_name: docSnap.get("team_name"),
+            image_src: doc.get("url"),
+            team_name: doc.get("team_name"),
         });
     }catch(e){
+        console.error(e);
         res.sendStatus(500);
     }
 })
@@ -43,16 +47,19 @@ app.get("/awareness-session/ticket/:id", async (req, res) => {
             return;
         }
         
-        let docRef = doc(db, "awareness_session", id);
-        let docSnap = await getDoc(docRef);
+        let teamsRef = collection(db, "awareness_session");
+        let q = query(teamsRef, where("number", "==", parseInt(id)));
+        let querySnap = await getDocs(q);
 
-        if(!docSnap.exists()){
+        if(querySnap.empty){
             res.sendStatus(404);
             return;
         }
 
-        res.render("ticket", {
-            image_src: docSnap.get("url"),
+        let doc = querySnap.docs[0];
+        
+        res.render("awareness", {
+            image_src: doc.get("url"),
         });
     }catch(e){
         res.sendStatus(500);
