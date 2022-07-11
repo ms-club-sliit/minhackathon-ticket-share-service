@@ -1,0 +1,35 @@
+html
+  head
+    title="Mini Hackathon 2022"
+    meta(charset='utf-8')
+    meta(property="og:site_name", content="Mini Hackathon 2022")
+    meta(property="og:title", content="Awareness session")
+    meta(property="og:description", content=`I registered for the awareness session!`)
+    meta(property="og:image", itemprop="image" content=image_src)
+    meta(property="og:type", content="website")
+    meta(property="og:url", content=image_src)
+
+    style(type='text/css').
+        .image-class {
+            height: calc(100% - 20px);
+            width: calc(100% - 20px);
+            object-fit: contain;
+        }
+        body {
+            margin: 20px;
+            background: #0e0e0e
+        }
+  body
+    img(src=image_src, alt="Ticket")#ticket.image-class
+
+    script.
+        const ticketElm = document.getElementById('ticket');
+        const { x, y, width, height } = ticketElm.getBoundingClientRect();
+        const centerPoint = { x: x + width / 2, y: y + height / 2 };
+
+        window.addEventListener('mousemove', (e) => {
+            const degreeX = (e.clientY - centerPoint.y) * 0.008;
+            const degreeY = (e.clientX - centerPoint.x) * -0.008;
+
+            ticketElm.style.transform = `perspective(1000px) rotateX(${degreeX}deg) rotateY(${degreeY}deg)`;
+        });
