@@ -29,7 +29,7 @@ app.get("/teams/ticket/:id", async (req, res) => {
         let doc = querySnap.docs[0];
         
         res.render("ticket", {
-            image_src: doc.get("url"),
+            image_src: doc.get("ticket_url"),
             team_name: doc.get("team_name"),
         });
     }catch(e){
@@ -59,7 +59,7 @@ app.get("/awareness-session/ticket/:id", async (req, res) => {
         let doc = querySnap.docs[0];
         
         res.render("awareness", {
-            image_src: doc.get("url"),
+            image_src: doc.get("ticket_url"),
         });
     }catch(e){
         res.sendStatus(500);
